@@ -19,11 +19,14 @@ namespace WindowsFormsApplication1
     public partial class Form1 : Form
     {
 
-         String adres;
-         String tresc;
+        String adres;
+        String tresc;
+        String email;
+
 
         static string result1;
         static string result2;
+        static string result3;
 
         public Form1()
         {
@@ -51,6 +54,18 @@ namespace WindowsFormsApplication1
             set
             {
                 result2 = value;
+            }
+        }
+
+        public static String memail
+        {
+            get
+            {
+                return result3;
+            }
+            set
+            {
+                result3 = value;
             }
         }
 
@@ -86,9 +101,9 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
-             
-            textBox1.Text = result1;
-            textBox2.Text = result2;
+
+            result1 = textBox1.Text;
+            result2 = textBox2.Text;
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -96,6 +111,9 @@ namespace WindowsFormsApplication1
             tresc = textBox2.Text;
         }
 
-
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            email = textBox3.Text;
+        }
     }
 }
