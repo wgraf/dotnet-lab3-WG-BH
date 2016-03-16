@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
+using System;
 using System.Net;
 using System.Text;
-
-
-namespace WindowsFormsApplication1
+/*
+namespace DownloadNodesSample
 {
     public class HtmlSample
     {
@@ -22,8 +17,6 @@ namespace WindowsFormsApplication1
         /// <summary>
         /// Prosta metoda, która zwraca zawartość HTML podanej strony www
         /// </summary>
-        /// 
-
         public string GetPageHtml()
         {
             using (var wc = new WebClient())
@@ -36,6 +29,7 @@ namespace WindowsFormsApplication1
                 return html;
             }
         }
+
         /// <summary>
         /// Równie prosta metoda, która wypisuje na konsole wartości atrybutów src oraz alt taga IMG
         /// znajdujących się na podanej stronie www
@@ -45,7 +39,7 @@ namespace WindowsFormsApplication1
             // Tworzymy obiekt klasy HtmlDocument zdefiniowanej w namespace HtmlAgilityPack
             // Uwaga - w referencjach projektu musi się znajdować ta biblioteka
             // Przy użyciu nuget-a pojawi się tam automatycznie
-            var doc = new HtmlAgilityPack.HtmlDocument();
+            var doc = new HtmlDocument();
 
             // Używamy naszej metody do pobrania zawartości strony
             var pageHtml = GetPageHtml();
@@ -80,25 +74,6 @@ namespace WindowsFormsApplication1
 
         }
     }
-
-
-    static class Program
-    {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-
-            var hs = new HtmlSample(Form1.madres);//"http://demotywatory.pl");
-
-            hs.PrintPageNodes();
-
-            Console.Read();
-        }
-    }
 }
+
+    */
