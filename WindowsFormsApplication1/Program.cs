@@ -6,12 +6,12 @@ using System.Windows.Forms;
 using HtmlAgilityPack;
 using System.Net;
 using System.Text;
+using System.IO;
 using System.Text.RegularExpressions;
 using WindowsFormsApplication1;
 using System.Drawing;
 using System.Net.Mail;
 using System.Web;
-using System.Net.Mail;
 
 
 namespace WindowsFormsApplication1
@@ -77,9 +77,10 @@ namespace WindowsFormsApplication1
                 // Każdy node ma zestaw atrybutów - nas interesują atrybuty src oraz alt
 
                 // Wyświetlamy wartość atrybuty src dla aktualnego węzła
-                //Console.WriteLine("Src value: " + node.GetAttributeValue("src", ""));
-                link = node.GetAttributeValue("src", "");
-
+                Console.WriteLine("Src value: " + node.GetAttributeValue("src", ""));
+                link = node.GetAttributeValue("src", "").ToString();
+                link=Form1.madres+link;
+                //MessageBox.Show(link);
 
                 // Wyświetlamy wartość atrybuty alt dla aktualnego węzła
                 Console.WriteLine("Alt value: " + node.GetAttributeValue("alt", ""));
@@ -97,8 +98,28 @@ namespace WindowsFormsApplication1
 
                     //POBIERANIE OBRAZKA
                     byte[] data;
-                    WebClient webClient = new WebClient();
-                    webClient.DownloadFile(link, @"c:\obrazy\imagej.jpg");
+                   // WebClient webClient = new WebClient();
+                    MessageBox.Show(link);
+                    //webClient.DownloadFile(link, @".");
+                    
+                    string localFilename = @"C:\Users\Student\Desktop\k\l.jpg";
+                    using (WebClient client = new WebClient())
+                    {
+                        client.DownloadFile(link, localFilename);
+                    }
+
+                   /* WebClient client = new WebClient();
+                    Stream stream = client.OpenRead(link);
+
+                    Bitmap bitmap = new Bitmap(stream); // Error : Parameter is not valid.
+                    stream.Flush();
+                    stream.Close();
+                    client.dispose();
+
+                    if (bitmap != null)
+                    {
+                        bitmap.Save("C:\Users\Student\Desktop\k" + "asdsad" + ".jpg");
+                    }*/
 
                     try
                     {
@@ -110,13 +131,13 @@ namespace WindowsFormsApplication1
                         mail.Body = "mail with attachment";
 
                         System.Net.Mail.Attachment attachment;
-                        attachment = new System.Net.Mail.Attachment(@"c:\obrazy\imagej.jpg");
+                         attachment = new System.Net.Mail.Attachment(@"C:\Users\Student\Desktop\k\l.jpg");
                         mail.Attachments.Add(attachment);
 
-                        SmtpServer.Port = 465;
+                        SmtpServer.Port = 587;
                         SmtpServer.Credentials = new System.Net.NetworkCredential("wojtasg3@autograf.pl", "Tinittunga1");
                         SmtpServer.EnableSsl = true;
-                        MessageBox.Show("gowno");
+                        MessageBox.Show("wyslano");
                         SmtpServer.Send(mail);
                         MessageBox.Show("mail Send");
                     }
