@@ -71,7 +71,7 @@ namespace WindowsFormsApplication1
 
         private void label1_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -94,7 +94,7 @@ namespace WindowsFormsApplication1
 
         }
 
-       private void textBox1_TextChanged(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
             adres = textBox1.Text;
         }
@@ -104,6 +104,11 @@ namespace WindowsFormsApplication1
 
             result1 = textBox1.Text;
             result2 = textBox2.Text;
+            result3 = textBox3.Text;
+
+            var hs = new HtmlSample(Form1.madres);
+
+            hs.PrintPageNodes();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)

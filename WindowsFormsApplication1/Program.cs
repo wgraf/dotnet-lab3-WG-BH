@@ -7,10 +7,16 @@ using HtmlAgilityPack;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using WindowsFormsApplication1;
+using System.Drawing;
+using System.Net.Mail;
+using System.Web;
+using System.Net.Mail;
 
 
 namespace WindowsFormsApplication1
 {
+
     public class HtmlSample
     {
         private readonly string _url;
@@ -43,7 +49,8 @@ namespace WindowsFormsApplication1
         /// </summary>
         public void PrintPageNodes()
         {
-            string opis;
+            string opis, link;
+            Image obrazek;
 
             // Tworzymy obiekt klasy HtmlDocument zdefiniowanej w namespace HtmlAgilityPack
             // Uwaga - w referencjach projektu musi się znajdować ta biblioteka
@@ -66,24 +73,84 @@ namespace WindowsFormsApplication1
 
                 // Wyświetlamy nazwę node'a (powinno byc img")
                 Console.WriteLine("Node name: " + node.Name);
-               
+
                 // Każdy node ma zestaw atrybutów - nas interesują atrybuty src oraz alt
 
                 // Wyświetlamy wartość atrybuty src dla aktualnego węzła
-                Console.WriteLine("Src value: " + node.GetAttributeValue("src", ""));
-                
+                //Console.WriteLine("Src value: " + node.GetAttributeValue("src", ""));
+                link = node.GetAttributeValue("src", "");
+
 
                 // Wyświetlamy wartość atrybuty alt dla aktualnego węzła
                 Console.WriteLine("Alt value: " + node.GetAttributeValue("alt", ""));
 
                 opis = node.GetAttributeValue("alt", "");
 
-               // MessageBox.Show(Form1.mtresc);
+                // MessageBox.Show(Form1.mtresc);
 
                 bool contains = Regex.IsMatch(opis, Form1.mtresc);
-                if(contains)
+                if (contains)
                 {
-                    MessageBox.Show("Zawiera!!!");
+                    MessageBox.Show("Zawiera!");
+                    // WebClient webClient = new WebClient();
+                    // WebClient.DownloadFile(link, "obrazek.jpg");
+
+                    try
+                    {
+                        //POBIERANIE OBRAZKA
+                        byte[] data;
+                        WebClient webClient = new WebClient();
+                        webClient.DownloadFile(link, @"c:\obrazy\imagej.jpg");
+                        
+
+                        //WYSYŁANIE MAILA
+                        var message = new MailMessage();
+                        message.From = new MailAddress("wojtasg3@autograf.pl", "Adres od");
+                        message.To.Add(new MailAddress(Form1.memail));
+                        message.Subject = "Temat maila";
+                        message.Body = link;
+
+                        var smtp = new SmtpClient("smtp.poczta.onet.pl");
+                       // smtp.UseDefaultCredentials = true;
+                        smtp.Credentials = new NetworkCredential("wojtasg3@autograf.pl", "Tinittunga1");
+                        smtp.EnableSsl = false;
+                        smtp.Port = 465;
+
+                        smtp.Send(message);
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show("Nastapil nastepujacy blad wysylania: \r\n" + ex.Message.ToString());
+                    }
+
+                    /*
+
+                                        try
+                                    {
+                                    MailMessage mail = new MailMessage();
+                                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                                    mail.From = new MailAddress("wojtasg3@gmail.com");
+                                    mail.To.Add(Form1.memail);
+                                    mail.Subject = "Test Mail";
+                                    mail.Body = "mail z zalacznikiem";
+
+                                   // System.Net.Mail.Attachment attachment;
+                                   // attachment = new System.Net.Mail.Attachment();
+                                   // mail.Attachments.Add(attachment);
+
+                                    SmtpServer.Port = 587;
+                                    SmtpServer.Credentials = new System.Net.NetworkCredential("wojtasg3@gmail.com", "anka1997");
+                                    SmtpServer.EnableSsl = true;
+
+                                    SmtpServer.Send(mail);
+                                    MessageBox.Show("mail Send");
+                                    }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.ToString());
+                                }
+                    */
+
                 }
 
                 // Oczywiscie w aplikacji JTTT nie będziemy tego wyświetlać tylko będziemy analizować 
@@ -94,7 +161,10 @@ namespace WindowsFormsApplication1
             }
 
         }
+
     }
+
+
 
 
     static class Program
@@ -105,18 +175,12 @@ namespace WindowsFormsApplication1
         [STAThread]
         static void Main()
         {
-            
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
 
-            //MessageBox.Show(Form1.mtresc);
-
-            //Form1.madres = "http://demotywatory.pl";
-
-            var hs = new HtmlSample(Form1.madres);
-
-            hs.PrintPageNodes();
+         
 
             Console.Read();
         }
