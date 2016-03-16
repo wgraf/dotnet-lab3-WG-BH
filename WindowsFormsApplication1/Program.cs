@@ -95,63 +95,73 @@ namespace WindowsFormsApplication1
                     // WebClient webClient = new WebClient();
                     // WebClient.DownloadFile(link, "obrazek.jpg");
 
+                    //POBIERANIE OBRAZKA
+                    byte[] data;
+                    WebClient webClient = new WebClient();
+                    webClient.DownloadFile(link, @"c:\obrazy\imagej.jpg");
+
                     try
                     {
-                        //POBIERANIE OBRAZKA
-                        byte[] data;
-                        WebClient webClient = new WebClient();
-                        webClient.DownloadFile(link, @"c:\obrazy\imagej.jpg");
-                        
+                        MailMessage mail = new MailMessage();
+                        SmtpClient SmtpServer = new SmtpClient("smtp.poczta.onet.pl");
+                        mail.From = new MailAddress("wojtasg3@autograf.pl");
+                        mail.To.Add(Form1.memail);
+                        mail.Subject = "Test Mail - 1";
+                        mail.Body = "mail with attachment";
 
-                        //WYSYŁANIE MAILA
-                        var message = new MailMessage();
-                        message.From = new MailAddress("wojtasg3@autograf.pl", "Adres od");
-                        message.To.Add(new MailAddress(Form1.memail));
-                        message.Subject = "Temat maila";
-                        message.Body = link;
+                        System.Net.Mail.Attachment attachment;
+                        attachment = new System.Net.Mail.Attachment(@"c:\obrazy\imagej.jpg");
+                        mail.Attachments.Add(attachment);
 
-                        var smtp = new SmtpClient("smtp.poczta.onet.pl");
-                       // smtp.UseDefaultCredentials = true;
-                        smtp.Credentials = new NetworkCredential("wojtasg3@autograf.pl", "Tinittunga1");
-                        smtp.EnableSsl = false;
-                        smtp.Port = 465;
-
-                        smtp.Send(message);
+                        SmtpServer.Port = 465;
+                        SmtpServer.Credentials = new System.Net.NetworkCredential("wojtasg3@autograf.pl", "Tinittunga1");
+                        SmtpServer.EnableSsl = true;
+                        MessageBox.Show("gowno");
+                        SmtpServer.Send(mail);
+                        MessageBox.Show("mail Send");
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Nastapil nastepujacy blad wysylania: \r\n" + ex.Message.ToString());
+                        MessageBox.Show("Nie wyslalem");
+                        Console.WriteLine(ex.ToString());
                     }
-
-                    /*
-
-                                        try
-                                    {
-                                    MailMessage mail = new MailMessage();
-                                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-                                    mail.From = new MailAddress("wojtasg3@gmail.com");
-                                    mail.To.Add(Form1.memail);
-                                    mail.Subject = "Test Mail";
-                                    mail.Body = "mail z zalacznikiem";
-
-                                   // System.Net.Mail.Attachment attachment;
-                                   // attachment = new System.Net.Mail.Attachment();
-                                   // mail.Attachments.Add(attachment);
-
-                                    SmtpServer.Port = 587;
-                                    SmtpServer.Credentials = new System.Net.NetworkCredential("wojtasg3@gmail.com", "anka1997");
-                                    SmtpServer.EnableSsl = true;
-
-                                    SmtpServer.Send(mail);
-                                    MessageBox.Show("mail Send");
-                                    }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine(ex.ToString());
-                                }
-                    */
 
                 }
+                    /*
+                        try
+                        {
+
+
+                            //POBIERANIE OBRAZKA
+                            byte[] data;
+                            WebClient webClient = new WebClient();
+                            webClient.DownloadFile(link, @"c:\obrazy\imagej.jpg");
+
+
+                            //WYSYŁANIE MAILA
+                            var message = new MailMessage();
+                            message.From = new MailAddress("wojtasg3@autograf.pl", "Adres od");
+                            message.To.Add(new MailAddress(Form1.memail));
+                            message.Subject = "Temat maila";
+                            message.Body = link;
+
+                            var smtp = new SmtpClient("smtp.poczta.onet.pl");
+                           // smtp.UseDefaultCredentials = true;
+                            smtp.Credentials = new NetworkCredential("wojtasg3@autograf.pl", "Tinittunga1");
+                            smtp.EnableSsl = false;
+                            smtp.Port = 465;
+
+                            smtp.Send(message);
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show("Nastapil nastepujacy blad wysylania: \r\n" + ex.Message.ToString());
+                        }*/
+
+                    
+                    
+
+                
 
                 // Oczywiscie w aplikacji JTTT nie będziemy tego wyświetlać tylko będziemy analizować 
                 // wartość atrybutów node'a jako string
